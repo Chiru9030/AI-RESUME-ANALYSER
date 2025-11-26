@@ -5,6 +5,9 @@ const path = require('path');
 const PORT = process.env.PORT || 8080;
 
 function getApiKey() {
+    // WARNING: This API key is hardcoded for DEMO purposes only.
+    // In a production environment, NEVER commit your API key to version control.
+    // Use environment variables instead.
     const key = process.env.GEMINI_API_KEY || 'AIzaSyBZcCtp4Bvkvost3S5Z4t5TH2iqv7VL_Jc';
     if (!key || key === 'your_api_key_here') {
         console.log('ℹ️  No GEMINI_API_KEY environment variable found. Using Mock Mode.');
@@ -151,20 +154,26 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                const prompt = `You are an expert resume analyzer and ATS (Applicant Tracking System) specialist. Analyze the following resume and provide detailed feedback.
+                const prompt = `You are an expert technical recruiter and ATS (Applicant Tracking System) specialist with high standards. Your goal is to provide a brutally honest and critical analysis of the following resume. Do not be polite; be accurate and constructive.
 
 Resume Content:
 ${resumeText}
 
 ${jobDescription ? `Job Description:\n${jobDescription}\n` : ''}
 
+Analyze the resume based on the following criteria:
+1.  **ATS Compatibility**: Check for formatting issues, keyword optimization, and readability.
+2.  **Impact & Metrics**: Look for quantifiable achievements (numbers, percentages, revenue). If they are missing, penalize the score.
+3.  **Relevance**: If a Job Description is provided, strictly evaluate how well the resume matches the requirements. If not, evaluate based on general industry standards for the apparent role.
+4.  **Clarity & Brevity**: Is the resume concise and easy to scan?
+
 Please provide a comprehensive analysis in the following JSON format:
 {
-    "atsScore": <number between 0-100>,
-    "summary": "<brief overall assessment>",
-    "skillGaps": "<identified skill gaps${jobDescription ? ' compared to job description' : ''}>",
-    "strengths": "<key strengths and highlights>",
-    "recommendations": "<specific actionable recommendations>"
+    "atsScore": <number between 0-100. Be strict. 85+ should be exceptional. Average resumes should be 50-70.>,
+    "summary": "<A critical 2-3 sentence summary of the candidate's suitability. Highlight the biggest flaw and the biggest strength.>",
+    "skillGaps": "<Specific technical or soft skills missing from the resume that are crucial for the role. Be specific.>",
+    "strengths": "<List the top 3 strongest points of the resume.>",
+    "recommendations": "<Provide 3-5 concrete, actionable steps to improve the resume. Focus on high-impact changes like adding metrics or restructuring sections.>"
 }
 
 Respond ONLY with valid JSON, no additional text.`;
