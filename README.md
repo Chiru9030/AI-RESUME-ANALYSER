@@ -50,7 +50,7 @@ A powerful, AI-driven tool to analyze resumes against job descriptions, providin
     -   (Optional) Paste the Job Description.
     -   Click **Analyze Resume**.
 
-## ⚠️ Security Note
+## Security Note
 
 > [!WARNING]
 > This repository includes a **public demo API key** for ease of use. If you fork this project for production, **please replace it with your own secure key** and use environment variables. The demo key may be rate-limited or revoked at any time.
